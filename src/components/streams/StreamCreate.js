@@ -1,5 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { createStream } from '../../actions';
 
 class StreamCreate extends React.Component {
   renderError({ error, touched }) {
@@ -26,8 +28,9 @@ class StreamCreate extends React.Component {
   }
 
   // submit callback
-  onSubmit(formValue) {
+  onSubmit = (formValue) => {
     // event 받을 필요 없음 - handleSubmit()이 e.preventDefault() 해줌
+    this.props.createStream(formValue);
   }
 
   render() {
@@ -60,7 +63,10 @@ const validate = (formValues) => {
 };
 
 // redux form 연동
-export default reduxForm({
+const formWrapped = reduxForm({
   form: 'streamCreate',  // key: form reducer - value: form의 이름
   validate               // validate() 연동
 })(StreamCreate);
+
+// action creator 연동
+export default connect(null, { createStream })(formWrapped);
