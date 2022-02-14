@@ -24,8 +24,9 @@ export const signOut = () => {
 
 // 스트리밍 정보 생성 action creator
 // redux thunk 활용한 asynchronous action creator
-export const createStream = formValues => async dispatch => {
-  const response = await streams.post('/streams', formValues);
+export const createStream = formValues => async (dispatch, getState) => {
+  const { userId } = getState().auth;
+  const response = await streams.post('/streams', { ...formValues, userId });
 
   dispatch({ type: CREATE_STREAM, payload: response.data });
 };
